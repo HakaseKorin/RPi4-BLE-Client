@@ -12,8 +12,8 @@ async def realignment():
     # Start Loop
     while True:
     # if aligned break out
-    if aligned:
-        break
+        if aligned:
+            break
     # Take Picture
     # AI draws Box around Target
     # get difference between crosshair and Target
