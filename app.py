@@ -54,7 +54,7 @@ async def main():
                 device, disconnected_callback=lambda c: disconnect_event.set()
             ) as client:
                 data = await client.read_gatt_char(TX_UUID)
-                print("received:", data)
+                print("received:", data.decode('utf-8'))
 
                 #await disconnect_event.wait()
                 #print("device disconnected")
