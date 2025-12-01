@@ -3,28 +3,46 @@ from bleak import BleakClient, BleakScanner
 
 SERVICE_UUID = "12345678-1234-5678-1234-56789abcdef0"
 CHAR_UUID     = "12345678-1234-5678-1234-56789abcdef1"
+DEVICE_NAME="ESP32_Server"
+
+async def scan_and_connect():
+    global device
+    
+    retries = 0
+    while True:
+        print(f"Scanning for device {DEVICE_NAME}")
+        device = await BleakScanner.find_device_by_name(DEVICE_NAME)
+
+        # Breaks out of loop once a connection is found
+        if device is not None:
+            print(f"Connected to {DEVICE_NAME} at...",device.address)
+            break
+        
+        print("No device found.. Now attemping to reconnect.. (30s)")
+        
+        # Do use asyncio.sleep() in an asyncio program.
+        await asyncio.sleep(30)
+        retries += 1
+        #TODO: change to properly end program
+        if retries>10: return
 
 async def main():
-    print("Scanning for ESP32...")
-    devices = await BleakScanner.discover()
+    await scan_and_connect()
 
-    esp = None
-    for d in devices:
-        if "ESP32_Server" in d.name:
-            esp = d
-            break
+    disconnect_event = asyncio.Event()
 
-    if esp is None:
-        print("ESP32 not found")
-        return
-
-    async with BleakClient(esp.address) as client:
-        print(f"Connected to {esp.address}")
-
-        while True:
-            msg = input("Enter data to send to ESP32: ")
+    # do all the back and forth in here..
+    try:
+        async with BleakClient(
+            device, disconnected_callback=lambda c: disconnect_event.set()
+        ) as client:
+            while True:
+                msg = input("Enter data to send to ESP32: ")
             data = msg.encode()
             await client.write_gatt_char(CHAR_UUID, data, response=True)
             print("Sent:", msg)
+
+    except Exception:
+        print("Exception while connecting/connected", Exception)
 
 asyncio.run(main())
