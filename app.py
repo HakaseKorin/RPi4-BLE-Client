@@ -21,6 +21,8 @@ async def scan_and_connect():
             break
         
         print("No device found.. Now attemping to reconnect.. (30s)")
+        
+        # Do use asyncio.sleep() in an asyncio program.
         await asyncio.sleep(30)
         retries += 1
         #TODO: change to properly end program
@@ -50,5 +52,7 @@ async def main():
 asyncio.run(scan_and_connect())
 print("program stopped")
 
-# Do use asyncio.sleep() in an asyncio program.
-# await asyncio.sleep(5)
+#TODO: make a case incase of diconnection when communicating to other devices.
+# just reuse scan & connect for this case
+#TODO: add ability to send to BLE Server
+#TODO: add other functionality when its finished
