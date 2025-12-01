@@ -61,7 +61,7 @@ async def main():
                 #print("device disconnected")
 
         except Exception:
-            print("Exception while connecting/connected")
+            print("Exception while connecting/connected", Exception)
 
 asyncio.run(main())
 print("program stopped")
