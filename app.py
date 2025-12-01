@@ -6,6 +6,19 @@ TX_UUID="ca695dc2-f8ee-4963-a0ec-d60dd3c30eef"
 RX_UUID="ca695dc3-f8ee-4963-a0ec-d60dd3c30eef"
 
 DEVICE_NAME="UART Service"
+aligned = False
+
+async def realignment():
+    # Start Loop
+    while True:
+    # if aligned break out
+    if aligned: break
+    # Take Picture
+    # AI draws Box around Target
+    # get difference between crosshair and Target
+    # if Difference between cross hair and Target are close enough
+        # Set aligned to True
+    # Send back data to realign claw
 
 async def scan_and_connect():
     global device
@@ -43,13 +56,13 @@ async def main():
                 data = await client.read_gatt_char(TX_UUID)
                 print("received:", data)
 
-                await disconnect_event.wait()
-                print("device disconnected")
+                #await disconnect_event.wait()
+                #print("device disconnected")
 
         except Exception:
             print("Exception while connecting/connected")
 
-asyncio.run(scan_and_connect())
+asyncio.run(main())
 print("program stopped")
 
 #TODO: make a case incase of diconnection when communicating to other devices.
