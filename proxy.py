@@ -38,9 +38,9 @@ async def main():
         ) as client:
             while True:
                 msg = input("Enter data to send to ESP32: ")
-            data = msg.encode()
-            await client.write_gatt_char(CHAR_UUID, data, response=True)
-            print("Sent:", msg)
+                data = msg.encode()
+                await client.write_gatt_char(CHAR_UUID, data, response=True)
+                print("Sent:", msg)
 
     except Exception:
         print("Exception while connecting/connected", Exception)
