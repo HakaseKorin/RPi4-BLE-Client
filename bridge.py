@@ -2,7 +2,7 @@ import RPi.GPIO as GPIO
 import time
 
 # --- CONFIG ---
-FPGA_PIN = 17   # physical pin 11 on Raspberry Pi header
+FPGA_PIN = 15
 
 # --- SETUP ---
 GPIO.setmode(GPIO.BCM)
@@ -20,3 +20,5 @@ except KeyboardInterrupt:
     pass
 
 GPIO.cleanup()
+
+# rpi.gpio-common replaced with python3-rpilgpio
