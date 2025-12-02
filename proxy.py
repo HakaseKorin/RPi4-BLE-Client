@@ -48,10 +48,19 @@ async def main():
                     data = ser.readline().decode(errors="ignore").strip()
                     if data:
                         print("Received:", data)
-                        msg = data
-                        data = msg.encode()
-                        await client.write_gatt_char(CHAR_UUID, data, response=True)
-                        print("Sent:", msg)
+
+                        if len(data) > 1:
+                            commands = list(data)
+                            for _ in commands:
+                                msg = _
+                                data = msg.encode()
+                                await client.write_gatt_char(CHAR_UUID, data, response=True)
+                                print("Sent:", msg)
+                        else:
+                            msg = data
+                            data = msg.encode()
+                            await client.write_gatt_char(CHAR_UUID, data, response=True)
+                            print("Sent:", msg)
                         data = None
 
     except Exception:
