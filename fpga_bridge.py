@@ -1,7 +1,7 @@
 import serial # pip install pyserial
 import time
 
-ser = serial.Serial('/dev/serial0', 9600, timeout=1)
+ser = serial.Serial("/dev/ttyS0", 9600, timeout=1)
 time.sleep(2)
 
 while True:
