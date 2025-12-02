@@ -42,7 +42,6 @@ async def main():
             device, disconnected_callback=lambda c: disconnect_event.set()
         ) as client:
             while True:
-                # msg = input("Enter data to send to ESP32: ")
                 
                 if ser.in_waiting:
                     data = ser.readline().decode(errors="ignore").strip()
@@ -61,7 +60,7 @@ async def main():
                             data = msg.encode()
                             await client.write_gatt_char(CHAR_UUID, data, response=True)
                             print("Sent:", msg)
-                        data = None
+                        data = None # resets to none to wait for new input
 
     except Exception:
         print("Exception while connecting/connected", Exception)

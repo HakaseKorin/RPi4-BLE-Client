@@ -2,6 +2,7 @@
 BLE Client to connect to a ESP32 BLE Server to issue corrections
 
 # To Run
+ - Navigate to the directory cd RPi4-BLE-Client
  - First activate the environment
     source env/bin/activate
  - Then select the program to run eg: to run proxy.py
