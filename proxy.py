@@ -1,5 +1,7 @@
 import asyncio
 from bleak import BleakClient, BleakScanner
+import serial
+import time
 
 SERVICE_UUID = "12345678-1234-5678-1234-56789abcdef0"
 CHAR_UUID     = "12345678-1234-5678-1234-56789abcdef1"
@@ -31,16 +33,26 @@ async def main():
 
     disconnect_event = asyncio.Event()
 
+    ser = serial.Serial("/dev/serial0",9600,timeout=1)
+    time.sleep(2)
+
     # do all the back and forth in here..
     try:
         async with BleakClient(
             device, disconnected_callback=lambda c: disconnect_event.set()
         ) as client:
             while True:
-                msg = input("Enter data to send to ESP32: ")
-                data = msg.encode()
-                await client.write_gatt_char(CHAR_UUID, data, response=True)
-                print("Sent:", msg)
+                # msg = input("Enter data to send to ESP32: ")
+                
+                if ser.in_waiting:
+                    data = ser.readline().decode(errors="ignore").strip()
+                    if data:
+                        print("Received:", data)
+                        msg = data
+                        data = msg.encode()
+                        await client.write_gatt_char(CHAR_UUID, data, response=True)
+                        print("Sent:", msg)
+                        data = None
 
     except Exception:
         print("Exception while connecting/connected", Exception)
